@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class WordleSolver 
 {
 	public static void main(String args[]) throws FileNotFoundException
-	{	
+	{
 		RankedWords rankedWords = new RankedWords();
 		
 		boolean correctAnswer = false;
