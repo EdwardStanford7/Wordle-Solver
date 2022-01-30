@@ -15,7 +15,7 @@ public class MostCommonLetters
 	{	
 		int[][] numCharUses = new int[5][26];
 		
-		Scanner s = new Scanner(new File("src/wordle_words.txt"));
+		Scanner s = new Scanner(new File("src/WordleSolver/wordle_words.txt"));
 		//Scanner s = new Scanner(new File("src/all_five_letter_words.txt")); // For hellowordl
 		
 		while (s.hasNext())
