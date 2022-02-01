@@ -18,7 +18,6 @@ public class Solver
 		Scanner input = new Scanner(System.in);
 		int wordLength;
 		
-		System.out.print("What length word are you solving? ");	
 		wordLength = getWordLength(input);
 		
 		RankedWords rankedWords = new RankedWords(wordLength);
@@ -46,12 +45,15 @@ public class Solver
 	
 	private static int getWordLength(Scanner input)
 	{
+		System.out.print("What length word are you solving? ");	
+		
 		int wordLength;
 		wordLength = input.nextInt();
 		
 		while(wordLength < 4 || wordLength > 11)
 		{
-			System.out.println("This program can not solve words of that size");
+			System.out.println("This program can not solve words of that size.");
+			System.out.print("What length word are you solving? ");	
 			wordLength = input.nextInt();
 		}
 		
@@ -66,6 +68,7 @@ public class Solver
 		while(! bestPossibleGuesses.contains(guess))
 		{
 			System.out.println("That word is not one of the possible words to guess.");
+			System.out.print("Which word did you guess? ");
 			guess = input.next();
 		}
 		
