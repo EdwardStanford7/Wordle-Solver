@@ -5,51 +5,52 @@ import java.util.ArrayList;
 public class LetterRestrictionsTracker 
 {
 	// Fields
-	private char knownLetter;
-	private ArrayList<Character> unusableLetters;
+	private ArrayList<Character> usableLetters;
 	
 	public LetterRestrictionsTracker()
 	{
-		knownLetter = ' ';
-		unusableLetters = new ArrayList<Character>();
+		usableLetters = new ArrayList<Character>();
+		for(int i = 97; i <= 122; ++i)
+		{
+			usableLetters.add((char)(i));
+		}
 	}
 
 	public boolean isValidLetter(char letter) 
 	{
-		if(knownLetter == ' ')
-		{
-			if(unusableLetters.contains(letter))
-			{
-				return false;
-			}
-		}
-		else if(knownLetter != letter)
-		{
-			return false;
-		}
-		
-		return true;
+		return usableLetters.contains(letter);
 	}
 
-	public void addRestriction(char letter, String color) 
+	public void removeLetter(char letter) 
 	{
-		if(color.equals("green"))
+		usableLetters.remove((Character) (letter));
+	}
+	
+	public void setGreenLetter(char letter)
+	{
+		ArrayList<Character> lettersToRemove = new ArrayList<Character>();
+		
+		for(char possibleLetter: usableLetters)
 		{
-			knownLetter = letter;
+			if(possibleLetter != letter)
+			{
+				lettersToRemove.add(possibleLetter);
+			}
 		}
-		else
+		
+		for(char ltr: lettersToRemove)
 		{
-			unusableLetters.add(letter);
+			usableLetters.remove((Character) (ltr));
 		}
 	}
 	
 	public boolean isLetterKnown()
 	{
-		if(knownLetter == ' ')
+		if(usableLetters.size() == 1)
 		{
-			return false;
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 }

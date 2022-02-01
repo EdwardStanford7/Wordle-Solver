@@ -6,7 +6,9 @@ public class WordRestricionsTracker
 {
 	// Fields
 	private LetterRestrictionsTracker[] letterRestrictions;
-	private ArrayList<Character> knownLettersInWord;
+	private ArrayList<Character> yellowLetters;
+	private ArrayList<Character> greenLetters;
+	private ArrayList<Character> greyLetters;
 	private int wordLength;
 	
 	public WordRestricionsTracker(int wordLength)
@@ -16,40 +18,63 @@ public class WordRestricionsTracker
 		for(int i = 0; i < wordLength; ++i)
 			letterRestrictions[i] = new LetterRestrictionsTracker();
 		
-		knownLettersInWord = new ArrayList<Character>();
+		yellowLetters = new ArrayList<Character>();
+		greenLetters = new ArrayList<Character>();
+		greyLetters = new ArrayList<Character>();
 		
 		this.wordLength = wordLength;
 	}
 	
 	public void addRestriction(char letter, int position, String color)
 	{
-		if(color.equals("grey"))
+		if(color.equals("green"))
 		{
-			for(int i = 0 ; i < wordLength; ++i)
+			
+			greenLetters.add(letter);
+			letterRestrictions[position].setGreenLetter(letter);
+		}
+		
+		if(color.equals("yellow"))
+		{
+			yellowLetters.add(letter);
+			letterRestrictions[position].removeLetter(letter);
+		}
+		
+		if(color.equals("grey"))
+		{	
+			if(! greenLetters.contains(letter))
 			{
-				if (i != position)
+				if(! yellowLetters.contains(letter))
 				{
-					letterRestrictions[i].addRestriction(letter, color);
+					greyLetters.add(letter);
+					
+					for(LetterRestrictionsTracker tracker: letterRestrictions)
+					{
+						tracker.removeLetter(letter);
+					}
 				}
 			}
-		}
-		else
-		{
-			knownLettersInWord.add(letter);
-		}
-		
-		
-		letterRestrictions[position].addRestriction(letter, color);
+			
+			letterRestrictions[position].removeLetter(letter);
+		}		
 	}
 
 	public boolean isValidWord(String word) 
-	{
+	{		
 		if(word.length() != wordLength)
 		{
 			return false;
 		}
 		
-		for(char letter: knownLettersInWord)
+		for(char letter: greenLetters)
+		{
+			if(! word.contains(String.valueOf(letter)))
+			{				
+				return false;
+			}
+		}
+		
+		for(char letter: yellowLetters)
 		{
 			if(! word.contains(String.valueOf(letter)))
 			{
@@ -57,10 +82,14 @@ public class WordRestricionsTracker
 			}
 		}
 		
-		for(int i = 0; i < wordLength; ++i)
+		for(int i = 0; i < word.length(); ++i)
+		{
 			if(! letterRestrictions[i].isValidLetter(word.charAt(i)))
+			{
 				return false;
-		
+			}
+		}
+				
 		return true;
 	}	
 	

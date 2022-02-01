@@ -33,7 +33,11 @@ public class RankedWords
 	}
 	
 	public void getInfo(Scanner input, String guess)
-	{				
+	{
+		HashMap<Character, Integer> greenLetters = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> yellowLetters = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> greyLetters = new HashMap<Character, Integer>();
+		
 		for(int i = 0; i < wordLength; ++i)
 		{
 			if(wordRestrictions.isLetterKnown(i))
@@ -46,19 +50,7 @@ public class RankedWords
 				System.out.print("What color was " + guess.charAt(i) + ": ");
 				String color = input.next();
 				
-				if(color.equals("grey"))
-				{
-					wordRestrictions.addRestriction(guess.charAt(i), i, color);
-					break;
-				}
-				
-				else if(color.equals("yellow"))
-				{
-					wordRestrictions.addRestriction(guess.charAt(i), i, color);
-					break;
-				}
-
-				else if(color.equals("green"))
+				if(color.equals("green"))
 				{
 					++numGreenLetters;
 					if(numGreenLetters == wordLength)
@@ -67,15 +59,40 @@ public class RankedWords
 						System.exit(0);
 					}
 					
-					wordRestrictions.addRestriction(guess.charAt(i), i, color);
+					greenLetters.put(guess.charAt(i), i);
 					break;
 				}
-				else
+				
+				if(color.equals("yellow"))
 				{
-					System.out.println("That is not a valid response.");
-					continue;
+					yellowLetters.put(guess.charAt(i), i);
+					break;
 				}
+				
+				if(color.equals("grey"))
+				{
+					greyLetters.put(guess.charAt(i), i);
+					break;
+				}
+				
+				System.out.println("That is not a valid response.");
+				continue;
 			}
+		}
+		
+		for(char letter: greenLetters.keySet())
+		{
+			wordRestrictions.addRestriction(letter, greenLetters.get(letter), "green");
+		}
+		
+		for(char letter: yellowLetters.keySet())
+		{
+			wordRestrictions.addRestriction(letter, yellowLetters.get(letter), "yellow");
+		}
+		
+		for(char letter: greyLetters.keySet())
+		{
+			wordRestrictions.addRestriction(letter, greyLetters.get(letter), "grey");
 		}
 	}
 	
