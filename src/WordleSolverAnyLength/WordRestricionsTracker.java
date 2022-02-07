@@ -2,6 +2,14 @@ package WordleSolverAnyLength;
 
 import java.util.ArrayList;
 
+/**
+ * This class keeps track of all the information about what letters
+ * can/cannot be in the words as well as specific positional data.
+ * 
+ * @author Edward Stanford
+ * @version February 7, 2022
+ */
+
 public class WordRestricionsTracker 
 {
 	// Fields
